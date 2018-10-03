@@ -60,6 +60,8 @@ var GlobalConfig = {
   var _lastSectionId = '';
   var _duringFocusChange = false;
 
+  var _keyMapping = KEYMAPPING
+
   /************/
   /* Polyfill */
   /************/
@@ -836,18 +838,18 @@ var GlobalConfig = {
       return false;
     };
 
-    var direction = KEYMAPPING[evt.keyCode];
-    if (!direction) {
-      if (evt.keyCode == 13) {
-        currentFocusedElement = getCurrentFocusedElement();
-        if (currentFocusedElement && getSectionId(currentFocusedElement)) {
-          if (!fireEvent(currentFocusedElement, 'enter-down')) {
-            return preventDefault();
-          }
+    var key = _keyMapping[evt.keyCode];
+    if (_keyMapping[evt.keyCode] === 'enter') {
+      currentFocusedElement = getCurrentFocusedElement();
+      if (currentFocusedElement && getSectionId(currentFocusedElement)) {
+        if (!fireEvent(currentFocusedElement, 'enter-down')) {
+          return preventDefault();
         }
       }
-      return;
     }
+
+    var direction = ['up', 'down', 'left', 'right'].indexOf(key) !== -1 ? key : null
+    if (!direction) return;
 
     currentFocusedElement = getCurrentFocusedElement();
 
@@ -883,7 +885,7 @@ var GlobalConfig = {
     if (evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
       return
     }
-    if (!_pause && _sectionCount && evt.keyCode == 13) {
+    if (!_pause && _sectionCount && _keyMapping[evt.keyCode] === 'enter') {
       var currentFocusedElement = getCurrentFocusedElement();
       if (currentFocusedElement && getSectionId(currentFocusedElement)) {
         if (!fireEvent(currentFocusedElement, 'enter-up')) {
@@ -945,7 +947,8 @@ var GlobalConfig = {
   /* Public Function */
   /*******************/
   var SpatialNavigation = {
-    init: function() {
+    init: function(keyMapping) {
+      _keyMapping = keyMapping || KEYMAPPING
       if (!_ready) {
         window.addEventListener('keydown', onKeyDown);
         window.addEventListener('keyup', onKeyUp);

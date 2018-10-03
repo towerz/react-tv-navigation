@@ -8,12 +8,12 @@ class SpatialNavigation {
     this.bindFocusEvent();
   }
 
-  init(updateState) {
+  init(updateState, keyMapping) {
     if (!this.setState) {
       this.setState = updateState;
     }
 
-    Navigation.init();
+    Navigation.init(keyMapping);
     Navigation.focus();
     this.bindFocusEvent();
   }

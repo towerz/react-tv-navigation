@@ -28,10 +28,10 @@ const withNavigation = compose(
   ),
   lifecycle({
     componentDidMount() {
-      SpatialNavigation.init(this.props.setFocus);
+      SpatialNavigation.init(this.props.setFocus, this.props.keyMapping);
     },
     componentDidUpdate() {
-      SpatialNavigation.init(this.props.setFocus);
+      SpatialNavigation.init(this.props.setFocus, this.props.keyMapping);
     },
     componentWillUnmount() {
       SpatialNavigation.destroy();
