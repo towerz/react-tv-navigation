@@ -826,8 +826,7 @@ var GlobalConfig = {
   }
 
   function onKeyDown(evt) {
-    if (!_sectionCount || _pause ||
-        evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
+    if (!_sectionCount || _pause) {
       return;
     }
 
@@ -882,9 +881,6 @@ var GlobalConfig = {
   }
 
   function onKeyUp(evt) {
-    if (evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
-      return
-    }
     if (!_pause && _sectionCount && _keyMapping[evt.keyCode] === 'enter') {
       var currentFocusedElement = getCurrentFocusedElement();
       if (currentFocusedElement && getSectionId(currentFocusedElement)) {
